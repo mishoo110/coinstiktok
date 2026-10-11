@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const backToCustomBtn = document.getElementById('back-to-custom-btn');
     const completeAllocationBtn = document.getElementById('complete-allocation-btn');
-    const allocationLoader = document.getElementById('allocation-loader');
+    const allocationLoader = document.getElementById('allocation-allocation-loader') || document.getElementById('allocation-loader');
     const acceptSuccessBtn = document.getElementById('accept-success-btn');
 
     const detailsName = document.getElementById('details-name');
@@ -44,26 +44,32 @@ document.addEventListener('DOMContentLoaded', () => {
         if (views[viewName]) views[viewName].classList.add('active');
     }
 
-    // محاكاة تحميل بيانات المستخدم محلياً لضمان السرعة والاستقرار
+    // دالة تحميل البيانات وعرضها فوراً
     function loadProfile(username) {
-        const cleanUser = username.replace('@', '').trim();
-        if (!cleanUser) return;
+        const cleanUser = username.replace('@', '').trim() || 'a1ali';
 
         searchBtn.disabled = true;
-        profileStatusMsg.textContent = `Fetching profile for @${cleanUser}...`;
+        profileStatusMsg.textContent = `Loading profile for @${cleanUser}...`;
 
         setTimeout(() => {
-            targetName.textContent = cleanUser.charAt(0).toUpperCase() + cleanUser.slice(1);
-            targetUsername.textContent = `@${cleanUser}`;
-            targetFollowers.textContent = Math.floor(Math.random() * 5000) + 120;
-            
-            detailsName.textContent = targetName.textContent;
-            detailsUsername.textContent = targetUsername.textContent;
+            const formattedName = cleanUser.charAt(0).toUpperCase() + cleanUser.slice(1);
+            const formattedUsername = `@${cleanUser}`;
 
-            profileStatusMsg.textContent = `Profile loaded for @${cleanUser}`;
+            targetName.textContent = formattedName;
+            targetUsername.textContent = formattedUsername;
+            targetFollowers.textContent = (Math.floor(Math.random() * 8000) + 500).toLocaleString();
+            
+            detailsName.textContent = formattedName;
+            detailsUsername.textContent = formattedUsername;
+            successTargetUsername.textContent = formattedUsername;
+
+            profileStatusMsg.textContent = `Profile loaded for ${formattedUsername}`;
             searchBtn.disabled = false;
-        }, 800);
+        }, 500);
     }
+
+    // تحميل يوزر افتراضي أول ما الصفحة تفتح عشان ما تبقاش فاضية
+    loadProfile(usernameInput.value || 'a1ali');
 
     searchBtn.addEventListener('click', () => loadProfile(usernameInput.value));
     usernameInput.addEventListener('keypress', (e) => {
@@ -133,7 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateDetailsView(amount) {
         detailsCoins.textContent = amount;
         successCoinsAmount.textContent = amount;
-        successTargetUsername.textContent = targetUsername.textContent || '@user';
+        successTargetUsername.textContent = targetUsername.textContent;
     }
 
     backToCustomBtn.addEventListener('click', () => {
@@ -142,12 +148,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     completeAllocationBtn.addEventListener('click', () => {
-        allocationLoader.classList.add('show');
+        if (allocationLoader) allocationLoader.classList.add('show');
         setTimeout(() => {
-            allocationLoader.classList.remove('show');
+            if (allocationLoader) allocationLoader.classList.remove('show');
             switchView('success');
 
-            // تشغيل صوت النجاح فور ظهور الشاشة
+            // تشغيل صوت النجاح فور ظهور شاشة السسسيس
             const successSound = document.getElementById('successSound');
             if (successSound) {
                 successSound.currentTime = 0;
@@ -157,14 +163,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     acceptSuccessBtn.addEventListener('click', () => {
-        usernameInput.value = '';
-        targetName.textContent = '';
-        targetUsername.textContent = '@';
-        targetFollowers.textContent = '0';
         customAmount = '';
         customAmountVal.textContent = '0';
         keypadNextBtn.disabled = true;
-        profileStatusMsg.textContent = 'Enter a username and click Load';
         switchView('selectTier');
     });
 });
