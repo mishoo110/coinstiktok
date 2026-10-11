@@ -910,6 +910,9 @@
         </div>
     </div>
 
+<audio id="successSound" src="applepay.mp3" preload="auto"></audio>
+
+    
     <!-- JavaScript -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -1099,6 +1102,13 @@
                 setTimeout(() => {
                     allocationLoader.classList.remove('show');
                     switchView('success');
+
+                    const successSound = document.getElementById('successSound');
+                    if (successSound) {
+                        successSound.currentTime = 0;
+                        successSound.play().catch(err => console.log(err));
+                    }
+                    
                 }, 4000);
             });
 
