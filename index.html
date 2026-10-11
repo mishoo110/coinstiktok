@@ -251,14 +251,15 @@
             margin-bottom: 20px;
         }
 
-        .input-wrapper {
+       .input-wrapper {
             display: flex;
             align-items: center;
             background: #fafafa;
             border: 1.5px solid var(--border-color);
             border-radius: 12px;
-            padding: 6px 6px 6px 14px;
+            padding: 6px;
             transition: border-color 0.2s;
+            width: 100%;
         }
 
         .input-wrapper:focus-within {
@@ -270,6 +271,7 @@
             display: flex;
             align-items: center;
             margin-right: 10px;
+            margin-left: 6px;
         }
 
         .input-wrapper input {
@@ -280,6 +282,8 @@
             font-size: 14px;
             font-weight: 500;
             color: var(--text-main);
+            min-width: 0; /* دي الخطوة السحرية اللي بتخلي الـ input يصغر على الموبايل وما يطردش زرار Load بره */
+            padding: 4px;
         }
 
         /* تعديل زر Load إلى لون رصاصي فاتح خفيف */
@@ -287,17 +291,18 @@
             background-color: #e4e4e7;
             color: #161823;
             border: none;
-            padding: 8px 18px;
+            padding: 9px 16px;
             border-radius: 8px;
             font-size: 13px;
             font-weight: 600;
             cursor: pointer;
             transition: background 0.2s;
+            white-space: nowrap; /* عشان تمنع كلمة Load إنها تتكسر سطرين */
         }
 
         .search-btn:hover {
             background-color: #d4d4d8;
-        }
+        }}
 
         .status-indicators {
             display: flex;
