@@ -101,11 +101,12 @@
         }
 
         .avatar-container img {
-            width: 80px;
-            height: 80px;
+            width: 85px;
+            height: 85px;
             border-radius: 16px;
             object-fit: cover;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+            border: 2px solid var(--border-color);
         }
 
         .profile-name {
@@ -281,9 +282,10 @@
             color: var(--text-main);
         }
 
+        /* تعديل زر Load إلى لون رصاصي فاتح خفيف */
         .search-btn {
-            background-color: var(--text-main);
-            color: white;
+            background-color: #e4e4e7;
+            color: #161823;
             border: none;
             padding: 8px 18px;
             border-radius: 8px;
@@ -291,28 +293,10 @@
             font-weight: 600;
             cursor: pointer;
             transition: background 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 6px;
         }
 
         .search-btn:hover {
-            background-color: #3f3f46;
-        }
-
-        .spinner {
-            display: none;
-            width: 12px;
-            height: 12px;
-            border: 2px solid #fff;
-            border-top: 2px solid transparent;
-            border-radius: 50%;
-            animation: spin 0.6s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            background-color: #d4d4d8;
         }
 
         .status-indicators {
@@ -612,6 +596,17 @@
             animation: spin 0.8s linear infinite;
         }
 
+        .loader-text {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
         /* Success View */
         .success-content {
             display: flex;
@@ -682,7 +677,7 @@
 </head>
 <body>
 
-    <!-- SVG Icon Symbols Library -->
+    <!-- SVG Icon Symbols -->
     <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
         <symbol id="tiktok-coin-symbol" viewBox="0 0 100 100">
             <circle cx="50" cy="50" r="46" fill="#FFD034" />
@@ -694,27 +689,28 @@
     </svg>
 
     <div class="app-wrapper">
-        <div class="app-container">                        
-            <!-- LEFT SIDEBAR: Target Overview (الصورة أصبحت تحت TARGET OVERVIEW مباشرة) -->
+        <div class="app-container">
+            <!-- LEFT SIDEBAR -->
             <aside class="sidebar">
                 <div>
                     <div class="sidebar-header">
                         <span class="header-tag">TARGET OVERVIEW</span>
                     </div>
-                                
+                    
                     <div class="profile-card" id="sidebar-profile-card">
                         <div class="avatar-container">
-                            <img id="target-avatar" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'><defs><linearGradient id='g' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23ff007f'/><stop offset='100%' stop-color='%237f00ff'/></linearGradient></defs><rect width='100' height='100' fill='url(%23g)'/><text x='50%' y='60%' font-family='Inter, sans-serif' font-weight='bold' font-size='42' fill='%23ffffff' text-anchor='middle'>ع</text></svg>" alt="Profile Avatar">
-                        </div>                                        
+                            <img id="target-avatar" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23e4e4e7'/><text x='50%' y='65%' font-family='Inter, sans-serif' font-weight='bold' font-size='50' fill='%2371727a' text-anchor='middle'>?</text></svg>" alt="Profile Avatar">
+                        </div>
+                        
                         <div class="profile-info">
-                            <h2 class="profile-name" id="target-name">a1ali</h2>
-                            <p class="profile-username" id="target-username">@a1ali</p>
+                            <h2 class="profile-name" id="target-name"></h2>
+                            <p class="profile-username" id="target-username">@</p>
                             <p class="followers-text-row">
-                                <span class="followers-count" id="target-followers">470</span> followers
+                                <span class="followers-count" id="target-followers">0</span> followers
                             </p>
                         </div>
                     </div>
-                </div>                
+                </div>
 
                 <div class="verified-footer">
                     <svg class="icon-verified" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -725,76 +721,27 @@
             </aside>
 
             <!-- RIGHT MAIN PANEL -->
-            <main class="main-panel">                                
-                <!-- VIEW 1: SELECT TIER -->                
+            <main class="main-panel">
+                <!-- VIEW 1: SELECT TIER -->
                 <section class="view active" id="view-select-tier">
                     <div class="view-header">
-                        <div class="title-with-icon">
-                            <h1>TikTok Booster</h1>
-                        </div>
+                        <h1>TikTok Booster</h1>
                         <p class="subtitle">Select Tier</p>
                     </div>
-                    
+
                     <div class="bonus-banner">
                         <p class="bonus-text">Includes 35% extra tier level bonus.</p>
                     </div>
-                    
+
                     <div class="tiers-grid" id="tiers-container">
-                        <button class="tier-card" data-tier="70" data-level="1">
-                            <div class="tier-card-main">
-                                <svg class="coin-icon-small" width="22" height="22"><use href="#tiktok-coin-symbol"/></svg>
-                                <span class="tier-amount">70</span>
-                            </div>
-                            <span class="tier-level">Level 1</span>
-                        </button>
-                        <button class="tier-card" data-tier="450" data-level="2">
-                            <div class="tier-card-main">
-                                <svg class="coin-icon-small" width="22" height="22"><use href="#tiktok-coin-symbol"/></svg>
-                                <span class="tier-amount">450</span>
-                            </div>
-                            <span class="tier-level">Level 2</span>
-                        </button>
-                        <button class="tier-card" data-tier="550" data-level="3">
-                            <div class="tier-card-main">
-                                <svg class="coin-icon-small" width="22" height="22"><use href="#tiktok-coin-symbol"/></svg>
-                                <span class="tier-amount">550</span>
-                            </div>
-                            <span class="tier-level">Level 3</span>
-                        </button>
-                        <button class="tier-card active" data-tier="750" data-level="4">
-                            <div class="tier-card-main">
-                                <svg class="coin-icon-small" width="22" height="22"><use href="#tiktok-coin-symbol"/></svg>
-                                <span class="tier-amount">750</span>
-                            </div>
-                            <span class="tier-level">Level 4</span>
-                        </button>
-                        <button class="tier-card" data-tier="1000" data-level="5">
-                            <div class="tier-card-main">
-                                <svg class="coin-icon-small" width="22" height="22"><use href="#tiktok-coin-symbol"/></svg>
-                                <span class="tier-amount">1,000</span>
-                            </div>
-                            <span class="tier-level">Level 5</span>
-                        </button>
-                        <button class="tier-card" data-tier="2000" data-level="6">
-                            <div class="tier-card-main">
-                                <svg class="coin-icon-small" width="22" height="22"><use href="#tiktok-coin-symbol"/></svg>
-                                <span class="tier-amount">2,000</span>
-                            </div>
-                            <span class="tier-level">Level 6</span>
-                        </button>
-                        <button class="tier-card" data-tier="15000" data-level="7">
-                            <div class="tier-card-main">
-                                <svg class="coin-icon-small" width="22" height="22"><use href="#tiktok-coin-symbol"/></svg>
-                                <span class="tier-amount">15,000</span>
-                            </div>
-                            <span class="tier-level">Level 7</span>
-                        </button>
-                        <button class="tier-card custom-card" data-tier="custom" id="tier-custom-btn">
-                            <div class="tier-card-main">
-                                <svg class="coin-icon-small" width="22" height="22"><use href="#tiktok-coin-symbol"/></svg>
-                            </div>
-                            <span class="tier-level">Custom</span>
-                        </button>
+                        <button class="tier-card" data-tier="70" data-level="1"><div class="tier-card-main"><svg class="coin-icon-small" width="22" height="22"><use href="#tiktok-coin-symbol"/></svg><span class="tier-amount">70</span></div><span class="tier-level">Level 1</span></button>
+                        <button class="tier-card" data-tier="450" data-level="2"><div class="tier-card-main"><svg class="coin-icon-small" width="22" height="22"><use href="#tiktok-coin-symbol"/></svg><span class="tier-amount">450</span></div><span class="tier-level">Level 2</span></button>
+                        <button class="tier-card" data-tier="550" data-level="3"><div class="tier-card-main"><svg class="coin-icon-small" width="22" height="22"><use href="#tiktok-coin-symbol"/></svg><span class="tier-amount">550</span></div><span class="tier-level">Level 3</span></button>
+                        <button class="tier-card active" data-tier="750" data-level="4"><div class="tier-card-main"><svg class="coin-icon-small" width="22" height="22"><use href="#tiktok-coin-symbol"/></svg><span class="tier-amount">750</span></div><span class="tier-level">Level 4</span></button>
+                        <button class="tier-card" data-tier="1000" data-level="5"><div class="tier-card-main"><svg class="coin-icon-small" width="22" height="22"><use href="#tiktok-coin-symbol"/></svg><span class="tier-amount">1,000</span></div><span class="tier-level">Level 5</span></button>
+                        <button class="tier-card" data-tier="2000" data-level="6"><div class="tier-card-main"><svg class="coin-icon-small" width="22" height="22"><use href="#tiktok-coin-symbol"/></svg><span class="tier-amount">2,000</span></div><span class="tier-level">Level 6</span></button>
+                        <button class="tier-card" data-tier="15000" data-level="7"><div class="tier-card-main"><svg class="coin-icon-small" width="22" height="22"><use href="#tiktok-coin-symbol"/></svg><span class="tier-amount">15,000</span></div><span class="tier-level">Level 7</span></button>
+                        <button class="tier-card custom-card" data-tier="custom" id="tier-custom-btn"><div class="tier-card-main"><svg class="coin-icon-small" width="22" height="22"><use href="#tiktok-coin-symbol"/></svg></div><span class="tier-level">Custom</span></button>
                     </div>
 
                     <div class="input-section">
@@ -805,15 +752,12 @@
                                     <circle cx="12" cy="7" r="4"/>
                                 </svg>
                             </div>
-                            <input type="text" id="username-input" value="a1ali" placeholder="Enter TikTok Username" autocomplete="off" spellcheck="false">
-                            <button class="search-btn" id="search-trigger-btn">
-                                <span class="btn-text">Load</span>
-                                <span class="spinner" id="search-spinner"></span>
-                            </button>
+                            <input type="text" id="username-input" value="" placeholder="Enter TikTok Username" autocomplete="off" spellcheck="false">
+                            <button class="search-btn" id="search-trigger-btn">Load</button>
                         </div>
-                                                
+                        
                         <div class="status-indicators">
-                            <p class="profile-status-msg" id="profile-status-message">Profile loaded for @a1ali</p>
+                            <p class="profile-status-msg" id="profile-status-message">Enter a username and click Load</p>
                             <div class="limited-time-badge">
                                 <span class="yellow-dot"></span>
                                 <span class="badge-text">Limited time active</span>
@@ -826,14 +770,14 @@
                     </div>
                 </section>
 
-                <!-- VIEW 2: PERSONALIZED KEYPAD -->                
+                <!-- VIEW 2: PERSONALIZED KEYPAD -->
                 <section class="view" id="view-personalized">
                     <div class="view-header">
                         <button class="back-link" id="back-to-tier-btn">
                             <svg class="back-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M19 12H5M5 12L12 19M5 12L12 5"/>
                             </svg>
-                            <span>Personalized</span>
+                            <span>Personalized Custom Amount</span>
                         </button>
                     </div>
 
@@ -857,13 +801,7 @@
                             <button class="keypad-key" data-val="7">7</button>
                             <button class="keypad-key" data-val="8">8</button>
                             <button class="keypad-key" data-val="9">9</button>
-                            <button class="keypad-key icon-key" data-val="delete">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"/>
-                                    <line x1="18" y1="9" x2="12" y2="15"/>
-                                    <line x1="12" y1="9" x2="18" y2="15"/>
-                                </svg>
-                            </button>
+                            <button class="keypad-key" data-val="delete">⌫</button>
                             <button class="keypad-key" data-val="0">0</button>
                             <button class="keypad-key" data-val="000">000</button>
                         </div>
@@ -874,7 +812,7 @@
                     </div>
                 </section>
 
-                <!-- VIEW 3: DETAILS CONFIRMATION -->                
+                <!-- VIEW 3: DETAILS CONFIRMATION -->
                 <section class="view" id="view-details">
                     <div class="view-header flex-header">
                         <button class="back-link" id="back-to-custom-btn">
@@ -882,7 +820,7 @@
                                 <path d="M19 12H5M5 12L12 19M5 12L12 5"/>
                             </svg>
                             <span>Details</span>
-                        </button>                                                
+                        </button>
                         <div class="secure-badge">
                             <svg class="secure-icon" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
@@ -896,13 +834,14 @@
                         <div class="details-row">
                             <span class="details-label">Target Account</span>
                             <div class="details-value-profile">
-                                <img class="details-mini-avatar" id="details-avatar" src="#" alt="Target Avatar">
+                                <img class="details-mini-avatar" id="details-avatar" src="" alt="Target Avatar">
                                 <div class="details-profile-texts">
-                                    <span class="details-profile-name" id="details-name">a1ali</span>
-                                    <span class="details-profile-username" id="details-username">@a1ali</span>
+                                    <span class="details-profile-name" id="details-name"></span>
+                                    <span class="details-profile-username" id="details-username"></span>
                                 </div>
                             </div>
                         </div>
+
                         <div class="details-row">
                             <span class="details-label">Selected Tier</span>
                             <div class="details-value-coins">
@@ -910,12 +849,14 @@
                                 <span class="details-coins-val" id="details-coins">750</span>
                             </div>
                         </div>
+
                         <div class="details-row">
                             <span class="details-label">Server Cluster</span>
                             <div class="details-value-text">
                                 <span class="details-server-text">Server Cluster Alpha</span>
                             </div>
                         </div>
+
                         <div class="details-row">
                             <span class="details-label">Direct Distribution Pipeline</span>
                             <div class="details-value-action">
@@ -939,7 +880,7 @@
                     </div>
                 </section>
 
-                <!-- VIEW 4: SUCCESS SCREEN -->                
+                <!-- VIEW 4: SUCCESS SCREEN -->
                 <section class="view" id="view-success">
                     <div class="success-content">
                         <div class="success-checkmark-wrapper">
@@ -948,9 +889,9 @@
                                 <path d="M23 41L34 52L57 29" fill="none" stroke="#10B981" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                         </div>
-                        <h1 class="success-title">Allocation Successful!</h1>                                                
+                        <h1 class="success-title">Allocation Successful!</h1>
                         <p class="success-summary-text">
-                            <span class="success-amount" id="success-coins-amount">750</span> assigned to <span class="success-username" id="success-target-username">@a1ali</span>.
+                            <span class="success-amount" id="success-coins-amount">750</span> coins assigned to <span class="success-username" id="success-target-username"></span>.
                         </p>
                         <div class="delivery-card">
                             <div class="delivery-date-row">
@@ -969,7 +910,7 @@
         </div>
     </div>
 
-    <!-- JavaScript Fully Integrated with Dynamic Real Data Fetcher -->
+    <!-- JavaScript -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const views = {
@@ -981,7 +922,6 @@
 
             const usernameInput = document.getElementById('username-input');
             const searchBtn = document.getElementById('search-trigger-btn');
-            const searchSpinner = document.getElementById('search-spinner');
             const profileStatusMsg = document.getElementById('profile-status-message');
             
             const targetName = document.getElementById('target-name');
@@ -1009,66 +949,76 @@
             const successCoinsAmount = document.getElementById('success-coins-amount');
             const successTargetUsername = document.getElementById('success-target-username');
 
+            const placeholderAvatarSvg = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23e4e4e7'/><text x='50%' y='65%' font-family='Inter, sans-serif' font-weight='bold' font-size='50' fill='%2371727a' text-anchor='middle'>?</text></svg>";
+
             let selectedTier = '750';
             let isCustom = false;
             let customAmount = '';
 
             function switchView(viewName) {
                 Object.values(views).forEach(view => view.classList.remove('active'));
-                if (views[viewName]) {
-                    views[viewName].classList.add('active');
-                }
+                if (views[viewName]) views[viewName].classList.add('active');
             }
 
-            // دالة لجلب معلومات الحساب الحقيقية عبر واجهة oEmbed الرسمية لتيك توك أو بدائل الويب
             async function fetchTikTokProfile(username) {
-                if (!username) return;
                 const cleanUser = username.replace('@', '').trim();
-                
-                profileStatusMsg.textContent = `Loading profile for @${cleanUser}...`;
+                if (!cleanUser) return;
+
+                profileStatusMsg.textContent = `Fetching real data for @${cleanUser}...`;
                 searchBtn.disabled = true;
-                if(searchSpinner) searchSpinner.style.display = 'inline-block';
+
+                const url = `https://tiktok-api23.p.rapidapi.com/api/user/info?uniqueId=${cleanUser}`;
+                const options = {
+                    method: 'GET',
+                    headers: {
+                        'x-rapidapi-host': 'tiktok-api23.p.rapidapi.com',
+                        'x-rapidapi-key': 'bf8075fb5emsh5f5d9206316acdcp108509jsn28e5398fb250'
+                    }
+                };
 
                 try {
-                    // محاولة جلب البيانات الحقيقية من تيك توك عبر oEmbed المتاح عامة
-                    const response = await fetch(`https://www.tiktok.com/oembed?url=https://www.tiktok.com/@${cleanUser}`);
-                    const data = await response.json();
+                    const response = await fetch(url, options);
+                    const result = await response.json();
 
-                    if (data && data.author_name) {
-                        targetName.textContent = data.author_name;
-                        targetUsername.textContent = `@${cleanUser}`;
-                        if (data.thumbnail_url) {
-                            targetAvatar.src = data.thumbnail_url;
-                            detailsAvatar.src = data.thumbnail_url;
+                    if (result && (result.userInfo || result.data || result.user)) {
+                        const userInfo = result.userInfo?.user || result.data?.user || result.user;
+                        const statsInfo = result.userInfo?.stats || result.data?.stats || result.stats;
+
+                        if (userInfo) {
+                            const realName = userInfo.nickname || cleanUser;
+                            const realUsername = `@${userInfo.uniqueId || cleanUser}`;
+                            const realAvatar = userInfo.avatarLarger || userInfo.avatarMedium || userInfo.avatarThumb;
+                            const realFollowers = statsInfo?.followerCount ? statsInfo.followerCount.toLocaleString() : "0";
+
+                            targetName.textContent = realName;
+                            targetUsername.textContent = realUsername;
+                            targetFollowers.textContent = realFollowers;
+                            
+                            if (realAvatar) {
+                                targetAvatar.src = realAvatar;
+                                detailsAvatar.src = realAvatar;
+                            }
+
+                            profileStatusMsg.textContent = `Profile loaded for ${realUsername}`;
+                            return;
                         }
-                        targetFollowers.textContent = (Math.floor(Math.random() * 85000) + 1200).toLocaleString();
-                        profileStatusMsg.textContent = `Profile loaded for @${cleanUser}`;
-                    } else {
-                        throw new Error();
                     }
+                    profileStatusMsg.textContent = `User @${cleanUser} not found.`;
                 } catch (error) {
-                    // في حال قيود CORS للمتصفح، يتم استخدام بديل ديناميكي آمن
+                    console.error("Fetch Error:", error);
+                    profileStatusMsg.textContent = `Connected to @${cleanUser}`;
                     targetName.textContent = cleanUser;
                     targetUsername.textContent = `@${cleanUser}`;
-                    targetFollowers.textContent = (Math.floor(Math.random() * 5000) + 100).toLocaleString();
-                    profileStatusMsg.textContent = `Profile loaded for @${cleanUser}`;
                 } finally {
                     searchBtn.disabled = false;
-                    if(searchSpinner) searchSpinner.style.display = 'none';
                 }
             }
 
-            searchBtn.addEventListener('click', () => {
-                fetchTikTokProfile(usernameInput.value);
-            });
-
+            searchBtn.addEventListener('click', () => fetchTikTokProfile(usernameInput.value));
             usernameInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    fetchTikTokProfile(usernameInput.value);
-                }
+                if (e.key === 'Enter') fetchTikTokProfile(usernameInput.value);
             });
 
-            // اختيار الباقات
             tierCards.forEach(card => {
                 card.addEventListener('click', () => {
                     tierCards.forEach(c => c.classList.remove('active'));
@@ -1098,7 +1048,6 @@
                 }
             });
 
-            // لوحة المفاتيح الرقمية (Keypad)
             keypad.addEventListener('click', (e) => {
                 const key = e.target.closest('.keypad-key');
                 if (!key) return;
@@ -1131,35 +1080,43 @@
             });
 
             function updateDetailsView(amount) {
-                const user = usernameInput.value.trim() || 'a1ali';
                 detailsName.textContent = targetName.textContent;
-                detailsUsername.textContent = `@${user.replace('@', '')}`;
-                detailsCoins.textContent = typeof amount === 'number' ? amount.toLocaleString() : amount;
+                detailsUsername.textContent = targetUsername.textContent;
+                detailsCoins.textContent = amount;
                 
-                successCoinsAmount.textContent = detailsCoins.textContent;
-                successTargetUsername.textContent = `@${user.replace('@', '')}`;
+                successCoinsAmount.textContent = amount;
+                successTargetUsername.textContent = targetUsername.textContent;
             }
 
             backToCustomBtn.addEventListener('click', () => {
-                if (isCustom) {
-                    switchView('personalized');
-                } else {
-                    switchView('selectTier');
-                }
+                if (isCustom) switchView('personalized');
+                else switchView('selectTier');
             });
 
+            // تعديل مدة الشاشة والـ Spinner إلى 4 ثوانٍ (4000 مللي ثانية)
             completeAllocationBtn.addEventListener('click', () => {
                 allocationLoader.classList.add('show');
                 setTimeout(() => {
                     allocationLoader.classList.remove('show');
                     switchView('success');
-                }, 2000);
+                }, 4000);
             });
 
             acceptSuccessBtn.addEventListener('click', () => {
+                usernameInput.value = '';
+                targetName.textContent = '';
+                targetUsername.textContent = '@';
+                targetFollowers.textContent = '0';
+                
+                targetAvatar.src = placeholderAvatarSvg;
+                detailsAvatar.src = placeholderAvatarSvg;
+
+                profileStatusMsg.textContent = 'Enter a username and click Load';
+                
                 customAmount = '';
                 customAmountVal.textContent = '0';
                 keypadNextBtn.disabled = true;
+                
                 switchView('selectTier');
             });
         });
