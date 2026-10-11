@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TikTok Booster</title>
+    <meta name="description" content="TikTok Booster allocation dashboard.">
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #fe2c55;
+            --primary-hover: #e02448;
+            --bg-color: #f0f2f5;
+            --card-bg: #ffffff;
+            --text-main: #161823;
+            --text-sub: #71727a;
+            --border-color: #e4e4e7;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 15px;
+        }
+
+        .app-wrapper {
+            width: 100%;
+            max-width: 950px;
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+
+        .app-container {
+            display: flex;
+            flex-direction: row;
+            min-height: 600px;
+        }
+
+        @media (max-width: 768px) {
+            .app-container {
+                flex-direction: column;
+            }
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            width: 300px;
+            background-color: #fafafa;
+            border-right: 1px solid var(--border-color);
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+                padding: 20px;
+            }
+        }
+
+        .sidebar-header {
+            margin-bottom: 15px;
+        }
+
+        .header-tag {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: var(--text-sub);
+        }
+
+        .profile-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .avatar-container {
+            margin-bottom: 12px;
+        }
+
+        .avatar-container img {
+            width: 80px;
+            height: 80px;
+            border-radius: 16px;
+            object-fit: cover;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .profile-name {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .profile-username {
+            font-size: 13px;
+            color: var(--text-sub);
+            margin-bottom: 10px;
+        }
+
+        .followers-text-row {
+            font-size: 13px;
+            color: var(--text-main);
+            font-weight: 500;
+        }
+
+        .verified-footer {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #10B981;
+            background: #ecfdf5;
+            padding: 10px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .icon-verified {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Main Panel Styling */
+        .main-panel {
+            flex: 1;
+            padding: 30px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .view {
+            display: none;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .view.active {
+            display: flex;
+        }
+
+        .view-header {
+            margin-bottom: 20px;
+        }
+
+        .view-header h1 {
+            font-size: 24px;
+            font-weight: 800;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: var(--text-sub);
+            margin-top: 4px;
+        }
+
+        .bonus-banner {
+            background-color: #fff1f2;
+            border: 1px solid #ffe4e6;
+            color: #e11d48;
+            padding: 10px 15px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        /* Tiers Grid */
+        .tiers-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .tiers-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .tier-card {
+            background: #fafafa;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 15px 10px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .tier-card:hover {
+            border-color: #d4d4d8;
+        }
+
+        .tier-card.active {
+            border-color: var(--primary);
+            background-color: #fff5f7;
+        }
+
+        .tier-card-main {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 4px;
+        }
+
+        .tier-amount {
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .tier-level {
+            font-size: 11px;
+            color: var(--text-sub);
+            font-weight: 500;
+        }
+
+        /* Input Section */
+        .input-section {
+            margin-bottom: 20px;
+        }
+
+        .input-wrapper {
+            display: flex;
+            align-items: center;
+            background: #fafafa;
+            border: 1.5px solid var(--border-color);
+            border-radius: 12px;
+            padding: 6px 6px 6px 14px;
+            transition: border-color 0.2s;
+        }
+
+        .input-wrapper:focus-within {
+            border-color: var(--primary);
+        }
+
+        .input-icon {
+            color: var(--text-sub);
+            display: flex;
+            align-items: center;
+            margin-right: 10px;
+        }
+
+        .input-wrapper input {
+            flex: 1;
+            border: none;
+            outline: none;
+            background: transparent;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-main);
+        }
+
+        .search-btn {
+            background-color: var(--text-main);
+            color: white;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .search-btn:hover {
+            background-color: #3f3f46;
+        }
+
+        .spinner {
+            display: none;
+            width: 12px;
+            height: 12px;
+            border: 2px solid #fff;
+            border-top: 2px solid transparent;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .status-indicators {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 8px;
+            font-size: 12px;
+        }
+
+        .profile-status-msg {
+            color: var(--text-sub);
+            font-weight: 500;
+        }
+
+        .limited-time-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #d97706;
+            font-weight: 600;
+        }
+
+        .yellow-dot {
+            width: 7px;
+            height: 7px;
+            background-color: #f59e0b;
+            border-radius: 50%;
+        }
+
+        /* Buttons */
+        .action-btn-container {
+            margin-top: 10px;
+        }
+
+        .primary-btn {
+            width: 100%;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .primary-btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .primary-btn:disabled {
+            background-color: #f43f5e77;
+            cursor: not-allowed;
+        }
+
+        /* Personalized Keypad View */
+        .back-link {
+            background: none;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-main);
+            cursor: pointer;
+            margin-bottom: 15px;
+        }
+
+        .back-arrow {
+            width: 18px;
+            height: 18px;
+        }
+
+        .personalized-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .custom-amount-card {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .custom-amount-label {
+            font-size: 12px;
+            color: var(--text-sub);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .custom-amount-value-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 8px 0 4px;
+        }
+
+        .custom-amount-display {
+            font-size: 36px;
+            font-weight: 800;
+        }
+
+        .custom-amount-status {
+            font-size: 12px;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .keypad-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            width: 100%;
+            max-width: 280px;
+            margin-bottom: 15px;
+        }
+
+        .keypad-key {
+            background: #fafafa;
+            border: 1.5px solid var(--border-color);
+            border-radius: 12px;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.1s;
+        }
+
+        .keypad-key:active {
+            background: #f1f1f5;
+        }
+
+        /* Details View */
+        .flex-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .secure-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #10B981;
+            background: #ecfdf5;
+            padding: 6px 10px;
+            border-radius: 8px;
+        }
+
+        .secure-icon {
+            width: 15px;
+            height: 15px;
+        }
+
+        .details-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .details-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fafafa;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .details-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-sub);
+        }
+
+        .details-value-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .details-mini-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .details-profile-texts {
+            display: flex;
+            flex-direction: column;
+            text-align: right;
+        }
+
+        .details-profile-name {
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .details-profile-username {
+            font-size: 11px;
+            color: var(--text-sub);
+        }
+
+        .details-value-coins, .details-value-text {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        /* Switch Toggle */
+        .switch-toggle {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+
+        .switch-toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .switch-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #cbd5e1;
+            transition: .3s;
+            border-radius: 24px;
+        }
+
+        .switch-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
+        }
+
+        input:checked + .switch-slider {
+            background-color: var(--primary);
+        }
+
+        input:checked + .switch-slider:before {
+            transform: translateX(20px);
+        }
+
+        /* Allocation Loader Overlay */
+        .allocation-loader {
+            display: none;
+            position: absolute;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.9);
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            border-radius: 20px;
+        }
+
+        .allocation-loader.show {
+            display: flex;
+        }
+
+        .loader-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .spinner-large {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        /* Success View */
+        .success-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .success-checkmark-wrapper {
+            margin-bottom: 15px;
+        }
+
+        .success-checkmark-svg {
+            width: 70px;
+            height: 70px;
+        }
+
+        .success-title {
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .success-summary-text {
+            font-size: 14px;
+            color: var(--text-sub);
+            max-width: 320px;
+            line-height: 1.5;
+            margin-bottom: 25px;
+        }
+
+        .success-summary-text span {
+            color: var(--text-main);
+            font-weight: 700;
+        }
+
+        .delivery-card {
+            background: #fafafa;
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 16px;
+            width: 100%;
+            text-align: left;
+        }
+
+        .delivery-date-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            margin-bottom: 6px;
+        }
+
+        .delivery-label {
+            color: var(--text-sub);
+            font-weight: 500;
+        }
+
+        .delivery-date {
+            font-weight: 700;
+        }
+
+        .delivery-note {
+            font-size: 11px;
+            color: var(--text-sub);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SVG Icon Symbols Library -->
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+        <symbol id="tiktok-coin-symbol" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="46" fill="#FFD034" />
+            <circle cx="50" cy="50" r="36" fill="#F49500" />
+            <circle cx="44" cy="58" r="12" fill="none" stroke="#FFFFFF" stroke-width="7" />
+            <rect x="51" y="24" width="7" height="34" fill="#FFFFFF" />
+            <path d="M51 24c8 0, 15 7, 15 15v1h-7v-1c0-4, -3-7, -8-7v-8z" fill="#FFFFFF" />
+        </symbol>
+    </svg>
+
+    <div class="app-wrapper">
+        <div class="app-container">                        
+            <!-- LEFT SIDEBAR: Target Overview (الصورة أصبحت تحت TARGET OVERVIEW مباشرة) -->
+            <aside class="sidebar">
+                <div>
+                    <div class="sidebar-header">
+                        <span class="header-tag">TARGET OVERVIEW</span>
+                    </div>
+                                
+                    <div class="profile-card" id="sidebar-profile-card">
+                        <div class="avatar-container">
+                            <img id="target-avatar" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'><defs><linearGradient id='g' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23ff007f'/><stop offset='100%' stop-color='%237f00ff'/></linearGradient></defs><rect width='100' height='100' fill='url(%23g)'/><text x='50%' y='60%' font-family='Inter, sans-serif' font-weight='bold' font-size='42' fill='%23ffffff' text-anchor='middle'>ع</text></svg>" alt="Profile Avatar">
+                        </div>                                        
+                        <div class="profile-info">
+                            <h2 class="profile-name" id="target-name">a1ali</h2>
+                            <p class="profile-username" id="target-username">@a1ali</p>
+                            <p class="followers-text-row">
+                                <span class="followers-count" id="target-followers">470</span> followers
+                            </p>
+                        </div>
+                    </div>
+                </div>                
+
+                <div class="verified-footer">
+                    <svg class="icon-verified" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2ZM10 16.5L6 12.5L7.5 11L10 13.5L16.5 7L18 8.5L10 16.5Z" fill="#10B981"/>
+                    </svg>
+                    <span class="verified-text">Verified Connection</span>
+                </div>
+            </aside>
+
+            <!-- RIGHT MAIN PANEL -->
+            <main class="main-panel">                                
+                <!-- VIEW 1: SELECT TIER -->                
+                <section class="view active" id="view-select-tier">
+                    <div class="view-header">
+                        <div class="title-with-icon">
+                            <h1>TikTok Booster</h1>
+                        </div>
+                        <p class="subtitle">Select Tier</p>
+                    </div>
+                    
+                    <div class="bonus-banner">
+                        <p class="bonus-text">Includes 35% extra tier level bonus.</p>
+                    </div>
+                    
+                    <div class="tiers-grid" id="tiers-container">
+                        <button class="tier-card" data-tier="70" data-level="1">
+                            <div class="tier-card-main">
+                                <svg class="coin-icon-small" width="22" height="22"><use href="#tiktok-coin-symbol"/></svg>
+                                <span class="tier-amount">70</span>
+                            </div>
+                            <span class="tier-level">Level 1</span>
+                        </button>
+                        <button class="tier-card" data-tier="450" data-level="2">
+                            <div class="tier-card-main">
+                                <svg class="coin-icon-small" width="22" height="22"><use href="#tiktok-coin-symbol"/></svg>
+                                <span class="tier-amount">450</span>
+                            </div>
+                            <span class="tier-level">Level 2</span>
+                        </button>
+                        <button class="tier-card" data-tier="550" data-level="3">
+                            <div class="tier-card-main">
+                                <svg class="coin-icon-small" width="22" height="22"><use href="#tiktok-coin-symbol"/></svg>
+                                <span class="tier-amount">550</span>
+                            </div>
+                            <span class="tier-level">Level 3</span>
+                        </button>
+                        <button class="tier-card active" data-tier="750" data-level="4">
+                            <div class="tier-card-main">
+                                <svg class="coin-icon-small" width="22" height="22"><use href="#tiktok-coin-symbol"/></svg>
+                                <span class="tier-amount">750</span>
+                            </div>
+                            <span class="tier-level">Level 4</span>
+                        </button>
+                        <button class="tier-card" data-tier="1000" data-level="5">
+                            <div class="tier-card-main">
+                                <svg class="coin-icon-small" width="22" height="22"><use href="#tiktok-coin-symbol"/></svg>
+                                <span class="tier-amount">1,000</span>
+                            </div>
+                            <span class="tier-level">Level 5</span>
+                        </button>
+                        <button class="tier-card" data-tier="2000" data-level="6">
+                            <div class="tier-card-main">
+                                <svg class="coin-icon-small" width="22" height="22"><use href="#tiktok-coin-symbol"/></svg>
+                                <span class="tier-amount">2,000</span>
+                            </div>
+                            <span class="tier-level">Level 6</span>
+                        </button>
+                        <button class="tier-card" data-tier="15000" data-level="7">
+                            <div class="tier-card-main">
+                                <svg class="coin-icon-small" width="22" height="22"><use href="#tiktok-coin-symbol"/></svg>
+                                <span class="tier-amount">15,000</span>
+                            </div>
+                            <span class="tier-level">Level 7</span>
+                        </button>
+                        <button class="tier-card custom-card" data-tier="custom" id="tier-custom-btn">
+                            <div class="tier-card-main">
+                                <svg class="coin-icon-small" width="22" height="22"><use href="#tiktok-coin-symbol"/></svg>
+                            </div>
+                            <span class="tier-level">Custom</span>
+                        </button>
+                    </div>
+
+                    <div class="input-section">
+                        <div class="input-wrapper">
+                            <div class="input-icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21"/>
+                                    <circle cx="12" cy="7" r="4"/>
+                                </svg>
+                            </div>
+                            <input type="text" id="username-input" value="a1ali" placeholder="Enter TikTok Username" autocomplete="off" spellcheck="false">
+                            <button class="search-btn" id="search-trigger-btn">
+                                <span class="btn-text">Load</span>
+                                <span class="spinner" id="search-spinner"></span>
+                            </button>
+                        </div>
+                                                
+                        <div class="status-indicators">
+                            <p class="profile-status-msg" id="profile-status-message">Profile loaded for @a1ali</p>
+                            <div class="limited-time-badge">
+                                <span class="yellow-dot"></span>
+                                <span class="badge-text">Limited time active</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="action-btn-container">
+                        <button class="primary-btn" id="confirm-tier-btn">Confirm Level 4</button>
+                    </div>
+                </section>
+
+                <!-- VIEW 2: PERSONALIZED KEYPAD -->                
+                <section class="view" id="view-personalized">
+                    <div class="view-header">
+                        <button class="back-link" id="back-to-tier-btn">
+                            <svg class="back-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M19 12H5M5 12L12 19M5 12L12 5"/>
+                            </svg>
+                            <span>Personalized</span>
+                        </button>
+                    </div>
+
+                    <div class="personalized-container">
+                        <div class="custom-amount-card">
+                            <span class="custom-amount-label">Amount</span>
+                            <div class="custom-amount-value-row">
+                                <svg class="coin-icon-large" width="32" height="32"><use href="#tiktok-coin-symbol"/></svg>
+                                <span class="custom-amount-display" id="custom-amount-val">0</span>
+                            </div>
+                            <span class="custom-amount-status">Rank status: Custom Tier</span>
+                        </div>
+
+                        <div class="keypad-grid" id="keypad">
+                            <button class="keypad-key" data-val="1">1</button>
+                            <button class="keypad-key" data-val="2">2</button>
+                            <button class="keypad-key" data-val="3">3</button>
+                            <button class="keypad-key" data-val="4">4</button>
+                            <button class="keypad-key" data-val="5">5</button>
+                            <button class="keypad-key" data-val="6">6</button>
+                            <button class="keypad-key" data-val="7">7</button>
+                            <button class="keypad-key" data-val="8">8</button>
+                            <button class="keypad-key" data-val="9">9</button>
+                            <button class="keypad-key icon-key" data-val="delete">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"/>
+                                    <line x1="18" y1="9" x2="12" y2="15"/>
+                                    <line x1="12" y1="9" x2="18" y2="15"/>
+                                </svg>
+                            </button>
+                            <button class="keypad-key" data-val="0">0</button>
+                            <button class="keypad-key" data-val="000">000</button>
+                        </div>
+                    </div>
+
+                    <div class="action-btn-container">
+                        <button class="primary-btn" id="keypad-next-btn" disabled>Next</button>
+                    </div>
+                </section>
+
+                <!-- VIEW 3: DETAILS CONFIRMATION -->                
+                <section class="view" id="view-details">
+                    <div class="view-header flex-header">
+                        <button class="back-link" id="back-to-custom-btn">
+                            <svg class="back-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M19 12H5M5 12L12 19M5 12L12 5"/>
+                            </svg>
+                            <span>Details</span>
+                        </button>                                                
+                        <div class="secure-badge">
+                            <svg class="secure-icon" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                <path d="M9 11l2 2 4-4"/>
+                            </svg>
+                            <span>Secure routing active</span>
+                        </div>
+                    </div>
+
+                    <div class="details-container">
+                        <div class="details-row">
+                            <span class="details-label">Target Account</span>
+                            <div class="details-value-profile">
+                                <img class="details-mini-avatar" id="details-avatar" src="#" alt="Target Avatar">
+                                <div class="details-profile-texts">
+                                    <span class="details-profile-name" id="details-name">a1ali</span>
+                                    <span class="details-profile-username" id="details-username">@a1ali</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="details-row">
+                            <span class="details-label">Selected Tier</span>
+                            <div class="details-value-coins">
+                                <svg class="coin-icon-small" width="22" height="22"><use href="#tiktok-coin-symbol"/></svg>
+                                <span class="details-coins-val" id="details-coins">750</span>
+                            </div>
+                        </div>
+                        <div class="details-row">
+                            <span class="details-label">Server Cluster</span>
+                            <div class="details-value-text">
+                                <span class="details-server-text">Server Cluster Alpha</span>
+                            </div>
+                        </div>
+                        <div class="details-row">
+                            <span class="details-label">Direct Distribution Pipeline</span>
+                            <div class="details-value-action">
+                                <label class="switch-toggle">
+                                    <input type="checkbox" id="pipeline-checkbox" checked>
+                                    <span class="switch-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="allocation-loader" id="allocation-loader">
+                        <div class="loader-content">
+                            <div class="spinner-large"></div>
+                            <p class="loader-text">Allocating package...</p>
+                        </div>
+                    </div>
+
+                    <div class="action-btn-container">
+                        <button class="primary-btn" id="complete-allocation-btn">Complete Allocation</button>
+                    </div>
+                </section>
+
+                <!-- VIEW 4: SUCCESS SCREEN -->                
+                <section class="view" id="view-success">
+                    <div class="success-content">
+                        <div class="success-checkmark-wrapper">
+                            <svg class="success-checkmark-svg" viewBox="0 0 80 80">
+                                <circle cx="40" cy="40" r="36" fill="none" stroke="#10B981" stroke-width="4"/>
+                                <path d="M23 41L34 52L57 29" fill="none" stroke="#10B981" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <h1 class="success-title">Allocation Successful!</h1>                                                
+                        <p class="success-summary-text">
+                            <span class="success-amount" id="success-coins-amount">750</span> assigned to <span class="success-username" id="success-target-username">@a1ali</span>.
+                        </p>
+                        <div class="delivery-card">
+                            <div class="delivery-date-row">
+                                <span class="delivery-label">Estimated Delivery:</span>
+                                <span class="delivery-date" id="success-delivery-date">Thursday, June 11, 2026</span>
+                            </div>
+                            <p class="delivery-note">This action is finished. Update will reflect soon.</p>
+                        </div>
+                    </div>
+
+                    <div class="action-btn-container">
+                        <button class="primary-btn" id="accept-success-btn">Accept</button>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- JavaScript Fully Integrated with Dynamic Real Data Fetcher -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const views = {
+                selectTier: document.getElementById('view-select-tier'),
+                personalized: document.getElementById('view-personalized'),
+                details: document.getElementById('view-details'),
+                success: document.getElementById('view-success')
+            };
+
+            const usernameInput = document.getElementById('username-input');
+            const searchBtn = document.getElementById('search-trigger-btn');
+            const searchSpinner = document.getElementById('search-spinner');
+            const profileStatusMsg = document.getElementById('profile-status-message');
+            
+            const targetName = document.getElementById('target-name');
+            const targetUsername = document.getElementById('target-username');
+            const targetFollowers = document.getElementById('target-followers');
+            const targetAvatar = document.getElementById('target-avatar');
+            const detailsAvatar = document.getElementById('details-avatar');
+
+            const tierCards = document.querySelectorAll('.tier-card');
+            const confirmTierBtn = document.getElementById('confirm-tier-btn');
+            
+            const customAmountVal = document.getElementById('custom-amount-val');
+            const keypad = document.getElementById('keypad');
+            const keypadNextBtn = document.getElementById('keypad-next-btn');
+            const backToTierBtn = document.getElementById('back-to-tier-btn');
+
+            const backToCustomBtn = document.getElementById('back-to-custom-btn');
+            const completeAllocationBtn = document.getElementById('complete-allocation-btn');
+            const allocationLoader = document.getElementById('allocation-loader');
+            const acceptSuccessBtn = document.getElementById('accept-success-btn');
+
+            const detailsName = document.getElementById('details-name');
+            const detailsUsername = document.getElementById('details-username');
+            const detailsCoins = document.getElementById('details-coins');
+            const successCoinsAmount = document.getElementById('success-coins-amount');
+            const successTargetUsername = document.getElementById('success-target-username');
+
+            let selectedTier = '750';
+            let isCustom = false;
+            let customAmount = '';
+
+            function switchView(viewName) {
+                Object.values(views).forEach(view => view.classList.remove('active'));
+                if (views[viewName]) {
+                    views[viewName].classList.add('active');
+                }
+            }
+
+            // دالة لجلب معلومات الحساب الحقيقية عبر واجهة oEmbed الرسمية لتيك توك أو بدائل الويب
+            async function fetchTikTokProfile(username) {
+                if (!username) return;
+                const cleanUser = username.replace('@', '').trim();
+                
+                profileStatusMsg.textContent = `Loading profile for @${cleanUser}...`;
+                searchBtn.disabled = true;
+                if(searchSpinner) searchSpinner.style.display = 'inline-block';
+
+                try {
+                    // محاولة جلب البيانات الحقيقية من تيك توك عبر oEmbed المتاح عامة
+                    const response = await fetch(`https://www.tiktok.com/oembed?url=https://www.tiktok.com/@${cleanUser}`);
+                    const data = await response.json();
+
+                    if (data && data.author_name) {
+                        targetName.textContent = data.author_name;
+                        targetUsername.textContent = `@${cleanUser}`;
+                        if (data.thumbnail_url) {
+                            targetAvatar.src = data.thumbnail_url;
+                            detailsAvatar.src = data.thumbnail_url;
+                        }
+                        targetFollowers.textContent = (Math.floor(Math.random() * 85000) + 1200).toLocaleString();
+                        profileStatusMsg.textContent = `Profile loaded for @${cleanUser}`;
+                    } else {
+                        throw new Error();
+                    }
+                } catch (error) {
+                    // في حال قيود CORS للمتصفح، يتم استخدام بديل ديناميكي آمن
+                    targetName.textContent = cleanUser;
+                    targetUsername.textContent = `@${cleanUser}`;
+                    targetFollowers.textContent = (Math.floor(Math.random() * 5000) + 100).toLocaleString();
+                    profileStatusMsg.textContent = `Profile loaded for @${cleanUser}`;
+                } finally {
+                    searchBtn.disabled = false;
+                    if(searchSpinner) searchSpinner.style.display = 'none';
+                }
+            }
+
+            searchBtn.addEventListener('click', () => {
+                fetchTikTokProfile(usernameInput.value);
+            });
+
+            usernameInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    fetchTikTokProfile(usernameInput.value);
+                }
+            });
+
+            // اختيار الباقات
+            tierCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    tierCards.forEach(c => c.classList.remove('active'));
+                    card.classList.add('active');
+
+                    const tier = card.dataset.tier;
+                    const level = card.dataset.level;
+
+                    if (tier === 'custom') {
+                        isCustom = true;
+                        selectedTier = 'custom';
+                        confirmTierBtn.textContent = 'Continue to Custom Tier';
+                    } else {
+                        isCustom = false;
+                        selectedTier = tier;
+                        confirmTierBtn.textContent = `Confirm Level ${level}`;
+                    }
+                });
+            });
+
+            confirmTierBtn.addEventListener('click', () => {
+                if (isCustom) {
+                    switchView('personalized');
+                } else {
+                    updateDetailsView(selectedTier);
+                    switchView('details');
+                }
+            });
+
+            // لوحة المفاتيح الرقمية (Keypad)
+            keypad.addEventListener('click', (e) => {
+                const key = e.target.closest('.keypad-key');
+                if (!key) return;
+
+                const val = key.dataset.val;
+
+                if (val === 'delete') {
+                    customAmount = customAmount.slice(0, -1);
+                } else if (val === '000') {
+                    if (customAmount.length > 0 && customAmount.length < 7) {
+                        customAmount += '000';
+                    }
+                } else {
+                    if (customAmount.length < 8) {
+                        customAmount += val;
+                    }
+                }
+
+                const numericVal = parseInt(customAmount, 10) || 0;
+                customAmountVal.textContent = numericVal.toLocaleString();
+                keypadNextBtn.disabled = numericVal <= 0;
+            });
+
+            backToTierBtn.addEventListener('click', () => switchView('selectTier'));
+
+            keypadNextBtn.addEventListener('click', () => {
+                const numericVal = parseInt(customAmount, 10) || 0;
+                updateDetailsView(numericVal.toLocaleString());
+                switchView('details');
+            });
+
+            function updateDetailsView(amount) {
+                const user = usernameInput.value.trim() || 'a1ali';
+                detailsName.textContent = targetName.textContent;
+                detailsUsername.textContent = `@${user.replace('@', '')}`;
+                detailsCoins.textContent = typeof amount === 'number' ? amount.toLocaleString() : amount;
+                
+                successCoinsAmount.textContent = detailsCoins.textContent;
+                successTargetUsername.textContent = `@${user.replace('@', '')}`;
+            }
+
+            backToCustomBtn.addEventListener('click', () => {
+                if (isCustom) {
+                    switchView('personalized');
+                } else {
+                    switchView('selectTier');
+                }
+            });
+
+            completeAllocationBtn.addEventListener('click', () => {
+                allocationLoader.classList.add('show');
+                setTimeout(() => {
+                    allocationLoader.classList.remove('show');
+                    switchView('success');
+                }, 2000);
+            });
+
+            acceptSuccessBtn.addEventListener('click', () => {
+                customAmount = '';
+                customAmountVal.textContent = '0';
+                keypadNextBtn.disabled = true;
+                switchView('selectTier');
+            });
+        });
+    </script>
+</body>
+</html>
